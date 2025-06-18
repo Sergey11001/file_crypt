@@ -1,0 +1,463 @@
+openapi: '3.0.0'
+
+info:
+  title: univer
+  version: '0.0.0'
+
+paths:
+  /sign-in:
+    post:
+      summary: SignIn
+      operationId: SignIn
+      requestBody:
+        $ref: '#/components/requestBodies/SignInInput'
+      responses:
+        '200':
+          $ref: '#/components/responses/SignInResult'
+        default:
+          $ref: '#/components/responses/ErrorResult'
+
+  /sign-up:
+    post:
+      summary: SignUp
+      operationId: SignUp
+      requestBody:
+        $ref: '#/components/requestBodies/SignUpInput'
+      responses:
+        '200':
+          $ref: '#/components/responses/SignUpResult'
+        default:
+          $ref: '#/components/responses/ErrorResult'
+
+  /refresh:
+    post:
+      summary: Refresh
+      operationId: Refresh
+      requestBody:
+        $ref: '#/components/requestBodies/RefreshInput'
+      responses:
+        '200':
+          $ref: '#/components/responses/RefreshResult'
+        default:
+          $ref: '#/components/responses/ErrorResult'
+
+  /file:
+    post:
+      summary: CreateFile
+      operationId: CreateFile
+      requestBody:
+        $ref: '#/components/requestBodies/CreateFileInput'
+      responses:
+        '200':
+          $ref: '#/components/responses/CreateFileResult'
+        default:
+          $ref: '#/components/responses/ErrorResult'
+
+  /download/common/files/{uuid}:
+    post:
+      parameters:
+        - name: uuid
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      summary: DownloadCommonFile
+      operationId: DownloadCommonFile
+      responses:
+        '200':
+          $ref: '#/components/responses/SuccessResult'
+        default:
+          $ref: '#/components/responses/ErrorResult'
+
+  /download/files/{uuid}:
+    post:
+      parameters:
+        - name: uuid
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      summary: DownloadFile
+      operationId: DownloadFile
+      responses:
+        '200':
+          $ref: '#/components/responses/SuccessResult'
+        default:
+          $ref: '#/components/responses/ErrorResult'
+
+  /files/{uuid}:
+    post:
+      parameters:
+        - name: uuid
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      summary: ShareFile
+      operationId: ShareFile
+      requestBody:
+        $ref: '#/components/requestBodies/ShareFileInput'
+      responses:
+        '200':
+          $ref: '#/components/responses/SuccessResult'
+        default:
+          $ref: '#/components/responses/ErrorResult'
+
+    delete:
+      summary: DeleteFile
+      operationId: DeleteFile
+      parameters:
+        - name: uuid
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          $ref: '#/components/responses/SuccessResult'
+        default:
+          $ref: '#/components/responses/ErrorResult'
+
+  /file/{uuid}/access:
+    post:
+      summary: DeleteFileAccess
+      operationId: DeleteFileAccess
+      parameters:
+        - name: uuid
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        $ref: '#/components/requestBodies/DeleteFileAccessInput'
+      responses:
+        '200':
+          $ref: '#/components/responses/SuccessResult'
+        default:
+          $ref: '#/components/responses/ErrorResult'
+
+  /files:
+    get:
+      summary: Files
+      operationId: Files
+      responses:
+        '200':
+          $ref: '#/components/responses/FilesResult'
+        default:
+          $ref: '#/components/responses/ErrorResult'
+
+  /available-files:
+    get:
+      summary: AvailableFiles
+      operationId: AvailableFiles
+      responses:
+        '200':
+          $ref: '#/components/responses/AvailableFilesResult'
+        default:
+          $ref: '#/components/responses/ErrorResult'
+
+  /users:
+    get:
+      summary: Users
+      operationId: Users
+      responses:
+        '200':
+          $ref: '#/components/responses/UsersResult'
+        default:
+          $ref: '#/components/responses/ErrorResult'
+
+  /users/update-keys:
+    post:
+      summary: UpdateUserKeys
+      operationId: UpdateUserKeys
+      requestBody:
+        $ref: '#/components/requestBodies/UpdateUserKeysInput'
+      responses:
+        '200':
+          $ref: '#/components/responses/SuccessResult'
+        default:
+          $ref: '#/components/responses/ErrorResult'
+
+  /users/for-share/{uuid}:
+    get:
+      summary: UsersForShare
+      operationId: UsersForShare
+      parameters:
+        - name: uuid
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          $ref: '#/components/responses/UsersResult'
+        default:
+          $ref: '#/components/responses/ErrorResult'
+
+  /users/available/{uuid}:
+    get:
+      summary: AvailableUsers
+      operationId: AvailableUsers
+      parameters:
+        - name: uuid
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          $ref: '#/components/responses/UsersResult'
+        default:
+          $ref: '#/components/responses/ErrorResult'
+
+components:
+
+  requestBodies:
+
+    # custom
+
+    # (names inside the group are ordered alphabetically)
+
+    SignInInput:
+      description: SignInInput
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - password
+              - email
+            properties:
+              password:
+                type: string
+              email:
+                type: string
+
+    SignUpInput:
+      description: SignUpInput
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - password
+              - email
+              - name
+              - public_key
+            properties:
+              password:
+                type: string
+              email:
+                type: string
+              name:
+                type: string
+              public_key:
+                type: string
+
+
+    RefreshInput:
+      description: RefreshInput
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - token
+            properties:
+              token:
+                type: string
+
+    CreateFileInput:
+      description: CreateFileInput (multipart form-data)
+      content:
+        multipart/form-data:
+          schema:
+            type: object
+            required:
+              - file
+              - name
+              - symmetric_key
+            properties:
+              file:
+                type: string
+                format: binary
+              name:
+                type: string
+              symmetric_key:
+                type: string
+
+    ShareFileInput:
+      description: ShareFileInput
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - recipient_uuid
+              - symmetric_key
+            properties:
+              recipient_uuid:
+                type: string
+                format: uuid
+              symmetric_key:
+                type: string
+
+    DeleteFileAccessInput:
+      description: DeleteFileAccessInput
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - recipient_uuid
+            properties:
+              recipient_uuid:
+                type: string
+                format: uuid
+
+    UpdateUserKeysInput:
+      description: UpdateUserKeysInput
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - public_key
+            properties:
+              public_key:
+                type: string
+
+  responses:
+
+    # common
+
+    # (names inside the group are ordered alphabetically)
+
+    ErrorResult:
+      description: ErrorResult
+      content:
+        application/json:
+          schema:
+            $ref: 'httpapi.yml#/components/schemas/ErrorResult'
+
+    SuccessResult:
+      description: SuccessResult
+
+    # custom
+
+    # (names inside the group are ordered alphabetically)
+
+    SignInResult:
+      description: SignInResult
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - access_token
+              - refresh_token
+              - public_key
+              - email
+            properties:
+              access_token:
+                type: string
+              refresh_token:
+                type: string
+              public_key:
+                type: string
+              email:
+                type: string
+
+    SignUpResult:
+      description: SignUpResult
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - access_token
+              - refresh_token
+              - public_key
+            properties:
+              access_token:
+                type: string
+              refresh_token:
+                type: string
+              public_key:
+                type: string
+
+    RefreshResult:
+      description: RefreshResult
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - access_token
+              - refresh_token
+            properties:
+              access_token:
+                type: string
+              refresh_token:
+                type: string
+
+    CreateFileResult:
+      description: CreateFileResult
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - file
+            properties:
+              file:
+                $ref: 'dto.yml#/components/schemas/File'
+
+    UsersResult:
+      description: UsersResult
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - users
+            properties:
+              users:
+                type: array
+                items:
+                  $ref: 'dto.yml#/components/schemas/User'
+
+    FilesResult:
+      description: FilesResult
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - files
+            properties:
+              files:
+                type: array
+                items:
+                  $ref: 'dto.yml#/components/schemas/File'
+
+    AvailableFilesResult:
+      description: AvailableFilesResult
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - files
+            properties:
+              files:
+                type: array
+                items:
+                  $ref: 'dto.yml#/components/schemas/File'

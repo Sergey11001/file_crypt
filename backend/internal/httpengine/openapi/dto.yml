@@ -1,0 +1,13 @@
+openapi: '3.0.0'
+
+info:
+  title: dto
+  version: '0.0.0'
+
+paths: { }
+
+components:
+  schemas:
+    File: {}
+    User: {}
+    UrlSharesView: {}

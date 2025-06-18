@@ -1,0 +1,8 @@
+package: openapi
+generate:
+  chi-server: true
+  models: true
+import-mapping:
+  dto.yml: univer/internal/dto
+  httpapi.yml: univer/pkg/lib/httpapi
+output: internal/httpengine/openapi/spec_gen.go
